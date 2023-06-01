@@ -15,4 +15,4 @@ References:
 - This paper : A Neural Stochastic Volatility Model (Rui Luo, Weinan Zhang, Xiaojun Xu, Jun Wang) https://arxiv.org/pdf/1712.00504.pdf
 - A Recurrent Latent Variable Model for Sequential Data (Junyoung Chung, Kyle Kastner, Laurent Dinh, Kratarth Goel, Aaron Courville, Yoshua Bengio) https://arxiv.org/abs/1506.02216
 - Sequential Neural Models with Stochastic Layers (Marco Fraccaro, Søren Kaae Sønderby, Ulrich Paquet, Ole Winther) https://arxiv.org/pdf/1605.07571.pdf
-- 
+- Autoregressive conditional het- eroscedasticity with estimates of the variance of united kingdom inflation (Robert F Engle) http://www.econ.uiuc.edu/~econ536/Papers/engle82.pdf
