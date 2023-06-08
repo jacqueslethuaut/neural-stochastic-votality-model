@@ -6,13 +6,13 @@ File: arch_model.py
 """
 
 import numpy as np
-import scipy.stats as stats
-
 import numpy as np
 
 class NeuralNetwork:
-    def __init__(self, input_size, hidden_size, output_size, initialization='xavier'):
+    def __init__(self, input_size, hidden_size, output_size, initialization='xavier', lambda_=0.01, regularization='l2'):
         self.initialization = initialization
+        self.lambda_ = lambda_  # regularization coefficient
+        self.regularization = regularization
         # Initialize weights and biases
         if self.initialization == 'xavier':
             self.W1 = np.random.randn(input_size, hidden_size) / np.sqrt(input_size)
@@ -20,10 +20,10 @@ class NeuralNetwork:
         elif self.initialization == 'he':
             self.W1 = np.random.randn(input_size, hidden_size) * np.sqrt(2/input_size)
             self.W2 = np.random.randn(hidden_size, output_size) * np.sqrt(2/hidden_size)
-        elif self.initialization == 'lecun':  # Added LeCun initialization
+        elif self.initialization == 'lecun':
             self.W1 = np.random.randn(input_size, hidden_size) * np.sqrt(1/input_size)
             self.W2 = np.random.randn(hidden_size, output_size) * np.sqrt(1/hidden_size)
-        
+
         self.b1 = np.zeros((1, hidden_size))
         self.b2 = np.zeros((1, output_size))
 
@@ -49,14 +49,22 @@ class NeuralNetwork:
 
     def backward_pass(self, X, y):
         m = X.shape[0]
-        
+
         dZ2 = self.A2 - y
-        dW2 = (1 / m) * np.dot(self.A1.T, dZ2)
+        dW2 = (1 / m) * np.dot(self.A1.T, dZ2) 
         db2 = (1 / m) * np.sum(dZ2, axis=0, keepdims=True)
-        
+
         dZ1 = np.dot(dZ2, self.W2.T) * self.sigmoid_derivative(self.A1)
         dW1 = (1 / m) * np.dot(X.T, dZ1)
         db1 = (1 / m) * np.sum(dZ1, axis=0, keepdims=True)
+
+        # Apply regularization based on the selected type
+        if self.regularization == 'l2':
+            dW2 += (self.lambda_/m) * self.W2
+            dW1 += (self.lambda_/m) * self.W1
+        elif self.regularization == 'l1':
+            dW2 += (self.lambda_/m) * np.sign(self.W2)
+            dW1 += (self.lambda_/m) * np.sign(self.W1)
 
         return dW1, db1, dW2, db2
 
