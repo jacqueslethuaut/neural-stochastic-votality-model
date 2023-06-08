@@ -6,7 +6,6 @@ File: arch_model.py
 """
 
 import numpy as np
-import numpy as np
 
 class NeuralNetwork:
     def __init__(self, input_size, hidden_size, output_size, initialization='xavier', lambda_=0.01, regularization='l2'):
@@ -65,6 +64,9 @@ class NeuralNetwork:
         elif self.regularization == 'l1':
             dW2 += (self.lambda_/m) * np.sign(self.W2)
             dW1 += (self.lambda_/m) * np.sign(self.W1)
+        elif self.regularization == 'elasticnet':
+            dW2 += (self.lambda_/m) * np.sign(self.W2) + (self.lambda_/m) * self.W2
+            dW1 += (self.lambda_/m) * np.sign(self.W1) + (self.lambda_/m) * self.W1
 
         return dW1, db1, dW2, db2
 
