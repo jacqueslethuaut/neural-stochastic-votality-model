@@ -9,6 +9,24 @@ In this paper, we show that the recent integration of statistical models with de
 Goal of the project
 
 Implement a Neural Stochastic Volatility Model based on this paper.
+
+Summarize
+
+The paper by Luo et al. proposes a neural stochastic volatility model that integrates statistical models with deep recurrent neural networks to estimate and predict volatility in time series data.
+
+Some key insights and lessons learned from the paper are:
+
+- The neural stochastic volatility model can capture the complex dynamics and dependencies of volatility over time by using a pair of complementary stochastic recurrent neural networks: a generative network and an inference network.
+- The model can handle both discrete and continuous observations, and can incorporate exogenous variables as additional inputs to improve the volatility estimation and prediction.
+- The model outperforms several deterministic and stochastic models on real-world stock price datasets in terms of average negative log-likelihood, which measures how well the model fits the data.
+
+A possible first implementation on the algorithm described in the paper is:
+
+- Implement the generative network and the inference network using TensorFlow or PyTorch, following the architecture and parameters specified in the paper.
+- Train the model on a stock price dataset using stochastic gradient descent with backpropagation through time, as described in the paper.
+- Evaluate the model on a test set using average negative log-likelihood and other metrics such as mean squared error or mean absolute error.
+
+Compare the results with other models such as GARCH, GPVol or StochVol.
  
 
 References:
