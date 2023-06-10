@@ -96,3 +96,8 @@ class NeuralNetwork:
         self.b1 = self.b1 - learning_rate * db1
         self.W2 = self.W2 - learning_rate * dW2
         self.b2 = self.b2 - learning_rate * db2
+        
+    def compute_loss(self, y_true, y_pred):
+        m = y_true.shape[0]
+        loss = (-1/m) * np.sum(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
+        return loss
