@@ -39,6 +39,20 @@ class NeuralNetwork:
         self.b2 = np.zeros((1, output_size))
 
     def sigmoid(self, z):
+        """
+        This is a simple function
+
+        :param arg1: The first argument
+        :type arg1: int
+        :param arg2: The second argument
+        :type arg2: str
+        :returns: A string containing arg1 and arg2
+        :rtype: str
+
+        .. math:: 
+
+        1 / (1 + exp(-z))
+        """
         return 1 / (1 + np.exp(-z))
 
     def sigmoid_derivative(self, z):
