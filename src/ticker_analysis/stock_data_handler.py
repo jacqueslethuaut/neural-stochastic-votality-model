@@ -11,7 +11,7 @@ import os
 from alpha_vantage.timeseries import TimeSeries
 
 class StockDataHandler:
-    def __init__(self, ticker, period, start_date, end_date, api_key, data_dir='stock_data'):
+    def __init__(self, ticker, period, start_date, end_date, api_key, data_dir='../data/stock_data'):
         self.ticker = ticker
         self.period = period
         self.start_date = start_date
