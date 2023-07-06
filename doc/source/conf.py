@@ -36,7 +36,8 @@ extensions = [
 	'sphinx.ext.doctest',
 	'sphinx.ext.imgmath',
 	'sphinx.ext.todo', 
-	'breathe' 
+	'breathe',
+	'sphinx.ext.napoleon'
 ]
 
 breathe_projects = { 'Neural Stochastic Volatility Model': './doxyoutput/xml' }
@@ -44,6 +45,9 @@ breathe_default_project = "Neural Stochastic Volatility Model"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+source_suffix = ['.rst', '.md']
+autosummary_generate = True
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

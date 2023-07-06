@@ -1,0 +1,26 @@
+Running Sphinx v6.2.1
+loading pickled environment... done
+building [mo]: targets for 0 po files that are out of date
+writing output... 
+building [latex]: all documents
+updating environment: 0 added, 0 changed, 0 removed
+reading sources... 
+looking for now-outdated files... none found
+processing neuralstochasticvolatilitymodel.tex... index quickstart apidocs 
+resolving references...
+done
+writing... done
+copying TeX support files... copying TeX support files...
+done
+build succeeded.
+
+The LaTeX files are in build/latex.
+Run 'make' in that directory to run these through (pdf)latex
+(use `make latexpdf' here to do that automatically).
+latexmk -pdf -dvi- -ps-  'neuralstochasticvolatilitymodel.tex'
+Rc files read:
+  latexmkrc
+Latexmk: This is Latexmk, John Collins, 7 Jan. 2023. Version 4.79.
+Latexmk: Nothing to do for 'neuralstochasticvolatilitymodel.tex'.
+Latexmk: All targets () are up-to-date
+
