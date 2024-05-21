@@ -1,0 +1,96 @@
+\documentclass[letterpaper, 11pt]{article}
+\usepackage{aaai24}
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{booktabs}
+
+\frenchspacing
+\setlength{\pdfpagewidth}{8.5in}
+\setlength{\pdfpageheight}{11in}
+
+% Define variables
+\newcommand{\authorname}{Jacques Le Thuaut}
+\newcommand{\institution}{University of Franche-Comté}
+\newcommand{\supervisor}{Prof. Clement Dombry}
+\newcommand{\authemail}{jacques.lethuaut@gmail.com}
+\newcommand{\supemail}{clement.dombry@univ-fcomte.fr}
+
+\title{Implementation of "A Neural Stochastic Volatility Model" \\ \vspace{10pt} \large Master's Memoir in Mathematics}
+\author{\authorname\textsuperscript{1} \\ \institution \\ Under the supervision of \supervisor\textsuperscript{2}}
+
+\begin{document}
+\maketitle
+
+% Add footnotes for emails
+\footnotetext[1]{Email: \texttt{\authemail}}
+\footnotetext[2]{Email: \texttt{\supemail}}
+
+\begin{abstract}
+The paper introduces a new volatility model that integrates deep recurrent neural networks with statistical models to formulate a stochastic volatility model for financial time series. The proposed model uses a pair of complementary stochastic recurrent neural networks: a generative network that models the joint distribution of the volatility process and an inference network that approximates the conditional distribution of the latent variables given the observations. The model aims to improve volatility estimation and prediction over traditional deterministic and stochastic models.
+\end{abstract}
+
+\section*{Acknowledgments}
+I would like to express my sincere gratitude to \supervisor\ for providing me the opportunity to delve into this new volatility tool. It was a challenging and truly interesting endeavor that significantly enriched my understanding of financial models and neural networks.
+
+\section{Introduction}
+Volatility, which reflects the degree of variation in financial markets, is critical for investment decisions, risk management, security valuation, and monetary policy. Traditional volatility models like GARCH and stochastic volatility (SV) models have limitations due to their strong assumptions and difficulty in handling complex dependencies. This paper proposes a data-driven approach using neural networks to model volatility without heavy reliance on exogenous inputs.
+
+\section{Related Work}
+The paper reviews existing volatility models, including deterministic models like ARCH and GARCH, and stochastic models such as the Heston model and MCMC-based frameworks. It highlights the limitations of these models and the potential of deep learning, particularly recurrent neural networks (RNNs), to address these limitations by modeling complex dependencies and nonlinear dynamics.
+
+\subsection{Deterministic Models: ARCH and GARCH}
+The Autoregressive Conditional Heteroskedasticity (ARCH) model, introduced by Engle (1982), and its generalization, the Generalized Autoregressive Conditional Heteroskedasticity (GARCH) model by Bollerslev (1986), are widely used for modeling financial time series. These models assume that the current volatility is a function of past squared observations and past variances. However, they rely on strong assumptions about the linearity and stationarity of the time series, which may not hold in real-world financial data.
+
+\subsection{Stochastic Models: Heston Model and MCMC-Based Frameworks}
+Stochastic volatility models, such as the Heston model (Heston, 1993), introduce randomness in the volatility process itself, allowing for more flexibility. The Heston model assumes that the variance of the asset return follows a mean-reverting square-root process. MCMC-based frameworks (Markov Chain Monte Carlo) are often used to estimate the parameters of stochastic volatility models. These models can capture more complex dynamics but are computationally intensive and may require simplifying assumptions to be tractable.
+
+\subsection{Limitations of Traditional Models}
+Both deterministic and stochastic models have limitations. Deterministic models like GARCH often fail to capture the long-range dependencies and nonlinearities in financial time series. Stochastic models, while more flexible, are computationally demanding and may still rely on unrealistic assumptions. Moreover, both types of models may struggle to adapt to structural changes in the market.
+
+\subsection{Potential of Deep Learning}
+Deep learning, particularly RNNs, offers a powerful alternative by directly learning the dependencies and patterns in the data without stringent assumptions. RNNs can model complex, nonlinear relationships and capture long-range dependencies, making them well-suited for volatility modeling. The integration of neural networks with traditional statistical methods can lead to more accurate and robust volatility forecasts.
+
+\section{Neural Stochastic Volatility Models}
+The proposed model consists of:
+\begin{itemize}
+    \item \textbf{Generative Network}: Uses RNNs to model the joint distribution of observable and latent variables. It predicts the next state of the system based on past observations and latent variables.
+    \item \textbf{Inference Network}: Uses bidirectional RNNs to approximate the conditional distribution of latent variables given the observable data. This network helps infer the latent variables that explain the observed data.
+\end{itemize}
+The model leverages variational inference to handle the intractability of exact inference in the posterior distribution of latent variables.
+
+\section{Training and Inference}
+The training process involves maximizing the evidence lower bound (ELBO) to learn the model parameters. The inference network provides an approximation to the true posterior distribution, facilitating efficient training. The model also supports recursive forecasting, enabling multi-step predictions.
+
+\section{Experiments}
+The paper conducts experiments on real-world stock price datasets, comparing the proposed model's performance against various deterministic and stochastic models. The results show that the proposed model achieves higher accuracy in volatility estimation and prediction, validated through lower average negative log-likelihood.
+
+\section{Conclusion}
+The paper presents a neural stochastic volatility model that integrates RNNs with statistical models for improved volatility estimation and prediction. The model demonstrates superior performance over traditional models, offering a flexible and powerful framework for financial time series analysis. Future work will explore extending the model to handle non-Gaussian residual distributions and other complex scenarios.
+
+\section{Key Contributions}
+\begin{itemize}
+    \item Introduction of a neural stochastic volatility model leveraging RNNs.
+    \item Use of variational inference for efficient training and inference.
+    \item Demonstration of improved volatility estimation and prediction on real-world datasets.
+\end{itemize}
+
+\begin{thebibliography}{}
+\bibitem{Engle1982}
+Engle, R. F. 1982. Autoregressive Conditional Heteroscedasticity with Estimates of the Variance of United Kingdom Inflation. \emph{Econometrica}, 50(4): 987-1007.
+
+\bibitem{Bollerslev1986}
+Bollerslev, T. 1986. Generalized Autoregressive Conditional Heteroskedasticity. \emph{Journal of Econometrics}, 31(3): 307-327.
+
+\bibitem{Heston1993}
+Heston, S. L. 1993. A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options. \emph{The Review of Financial Studies}, 6(2): 327-343.
+
+\bibitem{Luo2018}
+Luo, R.; Zhang, W.; Xu, X.; and Wang, J. 2018. A Neural Stochastic Volatility Model. \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, 32(1).
+\end{thebibliography}
+
+\end{document}

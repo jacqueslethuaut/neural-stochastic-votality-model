@@ -66,6 +66,7 @@ latex_elements = {
 		\setmonofont{DejaVu Sans Mono}
 	''',
     'preamble': r'''
+		r'\input{path/to/your/template.tex}',
 		\usepackage[titles]{tocloft}
 		\cftsetpnumwidth {1.25cm}\cftsetrmarg{1.5cm}
 		\setlength{\cftchapnumwidth}{0.75cm}
