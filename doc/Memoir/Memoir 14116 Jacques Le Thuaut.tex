@@ -20,7 +20,7 @@
 \newcommand{\authemail}{jacques.lethuaut@gmail.com}
 \newcommand{\supemail}{clement.dombry@univ-fcomte.fr}
 
-\title{Implementation of "A Neural Stochastic Volatility Model" \\ \vspace{10pt} \large Master's Memoir in Mathematics}
+\title{Implementation of a Neural Stochastic Volatility Model~\cite{Luo2018} \\ \vspace{10pt} \large Master's Memoir in Mathematics}
 \author{\authorname\textsuperscript{1} \\ \institution \\ Under the supervision of \supervisor\textsuperscript{2}}
 
 \begin{document}
@@ -44,16 +44,97 @@ Volatility, which reflects the degree of variation in financial markets, is crit
 The paper reviews existing volatility models, including deterministic models like ARCH and GARCH, and stochastic models such as the Heston model and MCMC-based frameworks. It highlights the limitations of these models and the potential of deep learning, particularly recurrent neural networks (RNNs), to address these limitations by modeling complex dependencies and nonlinear dynamics.
 
 \subsection{Deterministic Models: ARCH and GARCH}
-The Autoregressive Conditional Heteroskedasticity (ARCH) model, introduced by Engle (1982), and its generalization, the Generalized Autoregressive Conditional Heteroskedasticity (GARCH) model by Bollerslev (1986), are widely used for modeling financial time series. These models assume that the current volatility is a function of past squared observations and past variances. However, they rely on strong assumptions about the linearity and stationarity of the time series, which may not hold in real-world financial data.
+The Autoregressive Conditional Heteroskedasticity (ARCH) model, introduced by Engle (1982), and its generalization, the Generalized Autoregressive Conditional Heteroskedasticity (GARCH) model by Bollerslev (1986), are widely used for modeling financial time series. These models assume that the current volatility is a function of past squared observations and past variances.
+
+\subsubsection{ARCH Model}
+The ARCH model is defined as:
+\begin{equation}
+y_t = \sigma_t \epsilon_t, \quad \epsilon_t \sim N(0,1)
+\end{equation}
+\begin{equation}
+\sigma_t^2 = \alpha_0 + \sum_{i=1}^q \alpha_i y_{t-i}^2
+\end{equation}
+where \( y_t \) is the return at time \( t \), \( \sigma_t^2 \) is the conditional variance, \( \alpha_0 \) and \( \alpha_i \) are parameters, and \( \epsilon_t \) is a white noise error term.
+
+\subsubsection{GARCH Model}
+The GARCH model generalizes the ARCH model by including past conditional variances:
+\begin{equation}
+y_t = \sigma_t \epsilon_t, \quad \epsilon_t \sim N(0,1)
+\end{equation}
+\begin{equation}
+\sigma_t^2 = \alpha_0 + \sum_{i=1}^q \alpha_i y_{t-i}^2 + \sum_{j=1}^p \beta_j \sigma_{t-j}^2
+\end{equation}
+where \( \beta_j \) are parameters for past conditional variances.
 
 \subsection{Stochastic Models: Heston Model and MCMC-Based Frameworks}
-Stochastic volatility models, such as the Heston model (Heston, 1993), introduce randomness in the volatility process itself, allowing for more flexibility. The Heston model assumes that the variance of the asset return follows a mean-reverting square-root process. MCMC-based frameworks (Markov Chain Monte Carlo) are often used to estimate the parameters of stochastic volatility models. These models can capture more complex dynamics but are computationally intensive and may require simplifying assumptions to be tractable.
+Stochastic volatility models, such as the Heston model (Heston, 1993), introduce randomness in the volatility process itself, allowing for more flexibility. The Heston model assumes that the variance of the asset return follows a mean-reverting square-root process:
+\begin{equation}
+dV_t = \kappa (\theta - V_t) dt + \sigma \sqrt{V_t} dW_t
+\end{equation}
+where \( V_t \) is the variance at time \( t \), \( \kappa \) is the rate of mean reversion, \( \theta \) is the long-term variance, \( \sigma \) is the volatility of volatility, and \( W_t \) is a Wiener process.
+
+\subsubsection{MCMC-Based Frameworks}
+Markov Chain Monte Carlo (MCMC) methods are used to estimate the parameters of stochastic volatility models. MCMC methods generate samples from the posterior distribution of the parameters by constructing a Markov chain that has the desired distribution as its equilibrium distribution. The most commonly used MCMC method is the Metropolis-Hastings algorithm.
+
+The Metropolis-Hastings algorithm works as follows:
+\begin{enumerate}
+    \item Start with an initial value \( \theta^{(0)} \) for the parameters.
+    \item At iteration \( t \), generate a proposal \( \theta^* \) from a proposal distribution \( q(\theta^*|\theta^{(t-1)}) \).
+    \item Calculate the acceptance probability:
+    \begin{equation}
+    \alpha = \min \left( 1, \frac{p(\theta^*|y) q(\theta^{(t-1)}|\theta^*)}{p(\theta^{(t-1)}|y) q(\theta^*|\theta^{(t-1)})} \right)
+    \end{equation}
+    \item Accept the proposal with probability \( \alpha \); otherwise, keep the current value:
+    \begin{equation}
+    \theta^{(t)} = \begin{cases}
+    \theta^* & \text{with probability } \alpha \\
+    \theta^{(t-1)} & \text{with probability } 1-\alpha
+    \end{cases}
+    \end{equation}
+    \item Repeat steps 2-4 for a large number of iterations.
+\end{enumerate}
+
+MCMC methods are powerful but computationally intensive, and they may require careful tuning of the proposal distribution and the number of iterations to achieve good convergence.
 
 \subsection{Limitations of Traditional Models}
 Both deterministic and stochastic models have limitations. Deterministic models like GARCH often fail to capture the long-range dependencies and nonlinearities in financial time series. Stochastic models, while more flexible, are computationally demanding and may still rely on unrealistic assumptions. Moreover, both types of models may struggle to adapt to structural changes in the market.
 
 \subsection{Potential of Deep Learning}
 Deep learning, particularly RNNs, offers a powerful alternative by directly learning the dependencies and patterns in the data without stringent assumptions. RNNs can model complex, nonlinear relationships and capture long-range dependencies, making them well-suited for volatility modeling. The integration of neural networks with traditional statistical methods can lead to more accurate and robust volatility forecasts.
+
+Recurrent Neural Networks (RNNs) are a class of neural networks designed to recognize patterns in sequences of data. An RNN maintains a hidden state that captures information about previous time steps, allowing it to model temporal dependencies. The mathematical formulation of an RNN is as follows:
+
+For a given input sequence \( \{x_t\} \), the hidden state \( h_t \) and the output \( y_t \) at each time step \( t \) are updated as:
+\begin{equation}
+h_t = \sigma(W_h x_t + U_h h_{t-1} + b_h)
+\end{equation}
+\begin{equation}
+y_t = \sigma(W_y h_t + b_y)
+\end{equation}
+where:
+\begin{itemize}
+    \item \( x_t \) is the input at time step \( t \),
+    \item \( h_t \) is the hidden state at time step \( t \),
+    \item \( y_t \) is the output at time step \( t \),
+    \item \( W_h \), \( U_h \), and \( W_y \) are weight matrices,
+    \item \( b_h \) and \( b_y \) are bias vectors,
+    \item \( \sigma \) is an activation function (such as the hyperbolic tangent \( \tanh \) or the logistic sigmoid).
+\end{itemize}
+
+RNNs can be enhanced with Long Short-Term Memory (LSTM) cells or Gated Recurrent Units (GRUs) to better capture long-range dependencies and alleviate issues like vanishing gradients. The LSTM cell introduces gates to control the flow of information:
+
+\begin{align}
+f_t &= \sigma(W_f x_t + U_f h_{t-1} + b_f) \quad \text{(forget gate)} \\
+i_t &= \sigma(W_i x_t + U_i h_{t-1} + b_i) \quad \text{(input gate)} \\
+o_t &= \sigma(W_o x_t + U_o h_{t-1} + b_o) \quad \text{(output gate)} \\
+\tilde{c_t} &= \tanh(W_c x_t + U_c h_{t-1} + b_c) \quad \text{(cell input)} \\
+c_t &= f_t \odot c_{t-1} + i_t \odot \tilde{c_t} \quad \text{(cell state)} \\
+h_t &= o_t \odot \tanh(c_t) \quad \text{(hidden state)}
+\end{align}
+where \( f_t \), \( i_t \), \( o_t \), and \( c_t \) are the forget, input, output gates, and cell state, respectively, and \( \odot \) denotes element-wise multiplication.
+
+By leveraging these architectures, RNNs and their variants are capable of modeling the intricate dynamics of financial time series data, providing a robust tool for volatility forecasting.
+
 
 \section{Neural Stochastic Volatility Models}
 The proposed model consists of:
